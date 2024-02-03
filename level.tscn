@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://tecik5srxgie"]
+[gd_scene load_steps=7 format=3 uid="uid://tecik5srxgie"]
 
 [ext_resource type="Texture2D" uid="uid://dlwm3isygwpeo" path="res://Art/terrain_tileset.png" id="1_ywrvl"]
 [ext_resource type="PackedScene" uid="uid://dl6hqvgy6khd" path="res://player.tscn" id="2_5dyub"]
@@ -96,14 +96,6 @@ texture = ExtResource("1_ywrvl")
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_nipyy")
 
-[sub_resource type="Animation" id="Animation_jqoke"]
-resource_name = "camera_shift"
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_jmgmd"]
-_data = {
-"camera_shift": SubResource("Animation_jqoke")
-}
-
 [node name="Node2D" type="Node2D"]
 
 [node name="TileMap" type="TileMap" parent="."]
@@ -124,16 +116,11 @@ position_smoothing_enabled = true
 position_smoothing_speed = 3.0
 script = ExtResource("3_a3sr5")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Camera2D"]
-libraries = {
-"": SubResource("AnimationLibrary_jmgmd")
-}
-
 [node name="SceneBoundary" parent="." instance=ExtResource("4_4n2t2")]
 position = Vector2(429, 16)
 
 [node name="SceneBoundary2" parent="." instance=ExtResource("4_4n2t2")]
-position = Vector2(753, -244)
+position = Vector2(753, -323)
 rotation = 1.57079
 direction_type = 1
 

@@ -13,4 +13,3 @@ func _on_body_entered(body):
 			camera_shift.emit(direction_type)
 		else:
 			camera_shift.emit(direction_type + 2)
-			
