@@ -11,7 +11,7 @@ const camera_poses_adj_matrix = [[1,-1,-1,-1],
 								[-1,1,-1,1]]
 	
 @export_category("Variables")
-@export var shift_time := 0.25 # sec
+@export var shift_time := 0.15 # sec
 
 var camera_pos_index = 0
 var shifting = false	
@@ -20,16 +20,15 @@ func _ready():
 	position = camera_poses[0]
 
 func _shift_camera(direction):
-	if shifting:
-		return
 	var t = 0
 	var start = camera_poses[camera_pos_index]
-	camera_pos_index = camera_poses_adj_matrix[camera_pos_index][direction]
-	var end = camera_poses[camera_pos_index]
+	var new_camera_pos_index = camera_poses_adj_matrix[camera_pos_index][direction]
+	var end = camera_poses[new_camera_pos_index]
 	var shift_scale = 1 / shift_time 
 	shifting = true
 	while t <= 1:
 		await get_tree().create_timer(get_process_delta_time()).timeout
 		t += shift_scale * get_process_delta_time()
 		position = lerp(start, end, t)
+	camera_pos_index = new_camera_pos_index
 	shifting = false
