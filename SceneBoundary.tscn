@@ -3,13 +3,13 @@
 [ext_resource type="Script" path="res://Script/SceneBoundary.gd" id="1_avrdh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ox1q2"]
-size = Vector2(3, 344)
+size = Vector2(10, 344)
 
 [node name="SceneBoundary" type="Area2D"]
 script = ExtResource("1_avrdh")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-0.5, -162)
+position = Vector2(0, -162)
 shape = SubResource("RectangleShape2D_ox1q2")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

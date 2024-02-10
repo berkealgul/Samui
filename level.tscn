@@ -120,8 +120,8 @@ script = ExtResource("3_a3sr5")
 position = Vector2(429, 16)
 
 [node name="SceneBoundary2" parent="." instance=ExtResource("4_4n2t2")]
-position = Vector2(753, -323)
-rotation = 1.57079
+position = Vector2(899, -299)
+scale = Vector2(12.14, 0.09)
 direction_type = 1
 
 [connection signal="camera_shift" from="SceneBoundary" to="Camera2D" method="_shift_camera"]

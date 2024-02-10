@@ -23,6 +23,7 @@ func _shift_camera(direction):
 	var t = 0
 	var start = camera_poses[camera_pos_index]
 	var new_camera_pos_index = camera_poses_adj_matrix[camera_pos_index][direction]
+	if new_camera_pos_index == -1: return #dont shift when invalid space comes
 	var end = camera_poses[new_camera_pos_index]
 	var shift_scale = 1 / shift_time 
 	shifting = true

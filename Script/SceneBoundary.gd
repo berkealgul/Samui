@@ -25,3 +25,5 @@ func _emit_camera_shift_signal(velocity):
 		camera_shift.emit(direction_type)
 	else:
 		camera_shift.emit(direction_type + 2)
+
+
