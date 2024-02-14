@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://buol03bpwgjag"]
+
+[ext_resource type="Texture2D" uid="uid://dof568tv074h4" path="res://Art/plat_32.png" id="1_2c4w7"]
+[ext_resource type="Script" path="res://Script/plat.gd" id="1_s0smf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j1e35"]
+size = Vector2(64, 6)
+
+[node name="Plat32" type="AnimatableBody2D"]
+script = ExtResource("1_s0smf")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_2c4w7")
+
+[node name="Sprite2D" type="Sprite2D" parent="Sprite2D"]
+position = Vector2(32, 0)
+texture = ExtResource("1_2c4w7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(16, 0)
+shape = SubResource("RectangleShape2D_j1e35")

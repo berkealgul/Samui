@@ -13,6 +13,7 @@ const CLIMB_SPEED = 300.0
 const JUMP_VELOCITY = -250.0
 const MAX_JUMP_TIME = 0.25
 const MIN_JUMP_TIME = 0.05
+const WALL_FALL_SPEED = 150
 
 @export_category("Dash Parameters")
 const DASH_TIME = 0.1
@@ -22,15 +23,13 @@ const DASH_VELOCITY = 500
 const STAMINA_DECAY_PER_SECOND = 20.0
 const STAMINA_RECOVERY_RATE = 3 # seconds
 
-# Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
-
 var dashing_time = 0
 var jumping_time = 0
 var remaining_dashes = DEFAULT_CONSECUTIVE_DASH_COUNT
 var stamina = MAX_STAMINA
-
 var state = MOVEMENT_STATE.IDLE
+var spawn_point = Vector2(0,0)
 
 func _physics_process(delta):
 	var on_wall = is_on_wall()
@@ -50,7 +49,7 @@ func _physics_process(delta):
 		elif Input.is_action_just_pressed("hold_surface") and state != MOVEMENT_STATE.CLIMBING:
 			state = MOVEMENT_STATE.CLIMBING
 			velocity.y = 0
-		elif Input.is_action_just_pressed("ui_accept") and state != MOVEMENT_STATE.JUMPING:
+		elif Input.is_action_just_pressed("ui_accept") and state != MOVEMENT_STATE.JUMPING and on_floor:
 			velocity.x = -JUMP_VELOCITY *  horizontal_direction
 			jumping_time = 0
 			state = MOVEMENT_STATE.JUMPING
@@ -86,16 +85,23 @@ func _physics_process(delta):
 				state = MOVEMENT_STATE.IDLE
 		MOVEMENT_STATE.WALKING:
 			# normal movement
-			velocity.y += gravity * delta # Add the gravity.
 			if horizontal_direction:
 				velocity.x = horizontal_direction * SPEED
-			else:
-				velocity.x = move_toward(velocity.x, 0, SPEED) # smooth stop
+			else: velocity.x = move_toward(velocity.x, 0, SPEED) # smooth stop
+			if on_wall and velocity.x != 0:
+				velocity.y = min(WALL_FALL_SPEED, velocity.y + gravity * delta)
+			else: velocity.y += gravity * delta
 		MOVEMENT_STATE.IDLE: # only gravity for idle
-			velocity.y += gravity * delta 
-			#TODO: check celeste for mid air movement
 			if horizontal_direction:
 				velocity.x = horizontal_direction * SPEED
-			else:
-				velocity.x = move_toward(velocity.x, 0, SPEED) # smooth stop
+			else: velocity.x = move_toward(velocity.x, 0, SPEED) # smooth stop
+			if on_wall and velocity.x != 0:
+				velocity.y = min(WALL_FALL_SPEED, velocity.y + gravity * delta)
+			else: velocity.y += gravity * delta
 	move_and_slide()	
+
+func _on_set_player_spawn_point(position):
+	spawn_point = position
+
+func _on_player_dead():
+	position = spawn_point
