@@ -2,8 +2,8 @@ extends Camera2D
 
 signal set_player_spawn_point(position)
 
-const camera_poses = [Vector2(144, -11),
-					Vector2(778,-11),
+const camera_poses = [Vector2(144, 5),
+					Vector2(778,5),
 					Vector2(778, -325)]
 					
 const player_spawn_points = [Vector2(144, -11),

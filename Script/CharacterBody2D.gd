@@ -8,8 +8,8 @@ const DEFAULT_CONSECUTIVE_DASH_COUNT = 1
 const VERTICAL_VELOCITY_CAP = 1500.0 #NOTE: not used yet 
 
 @export_category("Movement Parameters")
-const SPEED = 300.0
-const CLIMB_SPEED = 300.0
+const SPEED = 150.0
+const CLIMB_SPEED = 200.0
 const JUMP_VELOCITY = -250.0
 const MAX_JUMP_TIME = 0.25
 const MIN_JUMP_TIME = 0.05
@@ -30,6 +30,33 @@ var remaining_dashes = DEFAULT_CONSECUTIVE_DASH_COUNT
 var stamina = MAX_STAMINA
 var state = MOVEMENT_STATE.IDLE
 var spawn_point = Vector2(0,0)
+
+# sprites
+var sLeft_Walk = 0
+var sRight_Walk = 0
+
+# animations
+var idleAnim = 0
+
+func _ready():
+	sLeft_Walk = get_node("LeftWalkSprite")
+	sRight_Walk = get_node("RightWalkSprite")
+	idleAnim = get_node("IdleAnimPlayer")
+	idleAnim.play() 
+
+func _process(delta):
+	if state == MOVEMENT_STATE.IDLE:
+		if not idleAnim.is_playing():
+			idleAnim.play()
+	elif state == MOVEMENT_STATE.WALKING:
+		pass
+		idleAnim.stop()
+		if velocity.x > 0:
+			sRight_Walk.visible = true
+			sLeft_Walk.visible = false
+		else:
+			sRight_Walk.visible = false
+			sLeft_Walk.visible = true
 
 func _physics_process(delta):
 	var on_wall = is_on_wall()
