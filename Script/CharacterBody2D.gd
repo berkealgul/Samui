@@ -31,32 +31,13 @@ var stamina = MAX_STAMINA
 var state = MOVEMENT_STATE.IDLE
 var spawn_point = Vector2(0,0)
 
-# sprites
-var sLeft_Walk = 0
-var sRight_Walk = 0
-
-# animations
-var idleAnim = 0
+@onready var animation_player = $AnimPlayer
 
 func _ready():
-	sLeft_Walk = get_node("LeftWalkSprite")
-	sRight_Walk = get_node("RightWalkSprite")
-	idleAnim = get_node("IdleAnimPlayer")
-	idleAnim.play() 
+	animation_player.play("Idle")
 
-func _process(delta):
-	if state == MOVEMENT_STATE.IDLE:
-		if not idleAnim.is_playing():
-			idleAnim.play()
-	elif state == MOVEMENT_STATE.WALKING:
-		pass
-		idleAnim.stop()
-		if velocity.x > 0:
-			sRight_Walk.visible = true
-			sLeft_Walk.visible = false
-		else:
-			sRight_Walk.visible = false
-			sLeft_Walk.visible = true
+func update_animation():
+	pass
 
 func _physics_process(delta):
 	var on_wall = is_on_wall()
@@ -76,13 +57,13 @@ func _physics_process(delta):
 		elif Input.is_action_just_pressed("hold_surface") and state != MOVEMENT_STATE.CLIMBING:
 			state = MOVEMENT_STATE.CLIMBING
 			velocity.y = 0
-		elif Input.is_action_just_pressed("ui_accept") and state != MOVEMENT_STATE.JUMPING and on_floor:
+		elif Input.is_action_just_pressed("ui_accept") and state != MOVEMENT_STATE.JUMPING and (on_floor or on_wall):
 			velocity.x = -JUMP_VELOCITY *  horizontal_direction
 			jumping_time = 0
 			state = MOVEMENT_STATE.JUMPING
 		if (Input.is_action_just_released("hold_surface") or not on_wall) and state == MOVEMENT_STATE.CLIMBING:
 			state = MOVEMENT_STATE.IDLE
-		if not Input.is_action_pressed("ui_accept") and jumping_time > MIN_JUMP_TIME and state == MOVEMENT_STATE.JUMPING:
+		if not Input.is_action_pressed("ui_accept") and jumping_time > MIN_JUMP_TIME and state == MOVEMENT_STATE.JUMPING and not is_on_ceiling():
 			state = MOVEMENT_STATE.IDLE
 	
 	# refresh stats
@@ -126,6 +107,7 @@ func _physics_process(delta):
 				velocity.y = min(WALL_FALL_SPEED, velocity.y + gravity * delta)
 			else: velocity.y += gravity * delta
 	move_and_slide()	
+	update_animation()
 
 func _on_set_player_spawn_point(position):
 	spawn_point = position
