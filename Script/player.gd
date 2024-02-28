@@ -37,8 +37,24 @@ func _ready():
 	animation_player.play("Idle")
 
 func update_animation():
-	pass
-
+	var vx = velocity[0]
+	var vy = velocity[1]
+	var anim = "Move"
+	if vy > 0:
+		anim += "_Down" 
+	elif vy < 0:
+		anim += "_Up" 
+	if vx > 0:
+		anim += "_Right" 
+	elif vx < 0:
+		anim += "_Left" 
+	
+	if anim == "Move":
+		anim = "Idle"
+	
+	if anim != animation_player.current_animation:
+		animation_player.play(anim)
+	
 func _physics_process(delta):
 	var on_wall = is_on_wall()
 	var on_floor = is_on_floor()
