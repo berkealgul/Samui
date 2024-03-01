@@ -30,8 +30,10 @@ var remaining_dashes = DEFAULT_CONSECUTIVE_DASH_COUNT
 var stamina = MAX_STAMINA
 var state = MOVEMENT_STATE.IDLE
 var spawn_point = Vector2(0,0)
+var sprite_rotation = 0
 
 @onready var animation_player = $AnimPlayer
+@onready var sprite_anchor = $SpriteAnchor
 
 func _ready():
 	animation_player.play("Idle")
@@ -88,16 +90,26 @@ func _physics_process(delta):
 		remaining_dashes = DEFAULT_CONSECUTIVE_DASH_COUNT
 		state = MOVEMENT_STATE.WALKING
 	
+	# reflesh rotation if not climbing
+	if state != MOVEMENT_STATE.CLIMBING and sprite_rotation != 0:
+		sprite_anchor.rotate(-sprite_rotation)
+		sprite_rotation = 0
+	# decide climb direction and rotate sprite accordingly
+	if state == MOVEMENT_STATE.CLIMBING and sprite_rotation == 0:
+		if get_slide_collision_count() != 0:
+			sprite_rotation = get_slide_collision(0).get_normal()[0] * PI/2
+			sprite_anchor.rotate(sprite_rotation)
+	
 	match state:
 		MOVEMENT_STATE.DASHING:
 			dashing_time += delta
 			if dashing_time > DASH_TIME:
 				state = MOVEMENT_STATE.IDLE
 		MOVEMENT_STATE.JUMPING:
-			jumping_time += delta
-			velocity.y = JUMP_VELOCITY 
-			if jumping_time > MAX_JUMP_TIME:
-				state = MOVEMENT_STATE.IDLE
+				jumping_time += delta
+				velocity.y = JUMP_VELOCITY 
+				if jumping_time > MAX_JUMP_TIME:
+					state = MOVEMENT_STATE.IDLE
 		MOVEMENT_STATE.CLIMBING: # wall movement 
 			if vertical_direction:
 				velocity.y = CLIMB_SPEED * vertical_direction
