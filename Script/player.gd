@@ -11,7 +11,7 @@ const VERTICAL_VELOCITY_CAP = 1500.0 #NOTE: not used yet
 const SPEED = 150.0
 const CLIMB_SPEED = 200.0
 const JUMP_VELOCITY = -250.0
-const MAX_JUMP_TIME = 0.25
+const MAX_JUMP_TIME = 0.15
 const MIN_JUMP_TIME = 0.05
 const WALL_FALL_SPEED = 150
 
@@ -37,6 +37,7 @@ var sprite_rotation = 0
 
 func _ready():
 	animation_player.play("Idle")
+	z_index = 1
 
 func update_animation():
 	var vx = velocity[0]
@@ -58,6 +59,7 @@ func update_animation():
 		animation_player.play(anim)
 	
 func _physics_process(delta):
+	print(position)
 	var on_wall = is_on_wall()
 	var on_floor = is_on_floor()
 	var horizontal_direction = Input.get_axis("ui_left", "ui_right")
