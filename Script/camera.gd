@@ -5,24 +5,24 @@ signal set_player_spawn_point(position)
 # NOTE: fill player_spawn_points for each camera poses
 const camera_poses = [Vector2(200, 5),
 					Vector2(836,5),
-					Vector2(1478, 5),
+					Vector2(1578, 5),
 					Vector2(1900, -330),
 					Vector2(2400, -230),
 					Vector2(2920, -330)]
 					
 const player_spawn_points = [Vector2(-0, -11),
-					Vector2(778,-11),
-					Vector2(778, -325),
-					Vector2(778, -325),
-					Vector2(778, -325),
-					Vector2(778, -325)]
+					Vector2(642,-11),
+					Vector2(1334, -11),
+					Vector2(1813, -348),
+					Vector2(2208, -348),
+					Vector2(2208, -348)]
 ## +x right -y up  -1 -> null
 ## [+x +y -x -y]
 const camera_poses_adj_matrix = [[1,-1,-1,-1],
 								 [2,-1,0,-1],
-								 [-1,-1,1,-1],
-								 [4,-1,3,-1],
-								 [5,-1,4,-1],
+								 [-1,-1,1,3],
+								 [4,2,-1,-1],
+								 [5,-1,3,-1],
 								 [-1,-1,4,-1]]
 	
 @export_category("Variables")

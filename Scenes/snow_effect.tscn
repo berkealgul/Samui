@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://d1g5f6mplscij"]
+
+[sub_resource type="Curve" id="Curve_tt0ho"]
+min_value = -40.0
+max_value = 40.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.262295, 13.6264), 0.0, 0.0, 0, 0, Vector2(0.382514, -11.8681), 0.0, 0.0, 0, 0, Vector2(0.573771, 15.3846), 0.0, 0.0, 0, 0, Vector2(0.759563, -10.989), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 6
+
+[sub_resource type="CurveTexture" id="CurveTexture_gjgh0"]
+curve = SubResource("Curve_tt0ho")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_mqtft"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(256, 1, 1)
+gravity = Vector3(0, 10, 0)
+tangential_accel_min = -1.0
+tangential_accel_max = 1.0
+tangential_accel_curve = SubResource("CurveTexture_gjgh0")
+scale_max = 2.0
+
+[node name="SnowEffect" type="Node2D"]
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+position = Vector2(2, 15)
+amount = 200
+process_material = SubResource("ParticleProcessMaterial_mqtft")
+lifetime = 10.0
+randomness = 1.0

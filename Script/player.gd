@@ -59,7 +59,6 @@ func update_animation():
 		animation_player.play(anim)
 	
 func _physics_process(delta):
-	print(position)
 	var on_wall = is_on_wall()
 	var on_floor = is_on_floor()
 	var horizontal_direction = Input.get_axis("ui_left", "ui_right")
